@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import axios, { AxiosResponse } from 'axios';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 enum HttpMethod {
   Get = 'GET',
@@ -13,7 +14,8 @@ enum HttpMethod {
   providedIn: 'root'
 })
 export class ApiService {
-  root: string = 'http://localhost:3000/';
+  root: string = 'http://localhost:3000/api/';
+  private _snackBar = inject(MatSnackBar);
 
   constructor() { }
 
@@ -28,7 +30,13 @@ export class ApiService {
       headers: {
         Authorization: token ? `Bearer ${token}` : undefined,
       },
+      // to make axios not throw errors on http errors
+      validateStatus: () => true,
     });
+
+    const strErrorCode = req.status.toString();
+    if (strErrorCode[0] == '4' || strErrorCode[0] == '5')
+      this._snackBar.open(req.data.message);
 
     return req;
   }

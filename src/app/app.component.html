@@ -1,10 +1,42 @@
 <mat-sidenav-container class="h-full w-full" opened="true" autosize>
-  <mat-sidenav #drawer mode="side" class="drop-shadow">
+  <mat-sidenav #drawer mode="side" class="drop-shadow" id="sidebar">
     <mat-list class="h-full">
       <mat-list-item>
-        <span class="text-2xl font-medium">Aprohirdeteses fekalia</span>
+        <span class="text-2xl font-medium cursor-pointer" (click)="this.navigateTo('/')">Aprohirdeteses fekalia</span>
       </mat-list-item>
 
+      <!-- Authed region -->
+      @if (this.isAuthed) {
+      <ng-container>
+        <mat-list-item>
+          <span>Advertisements</span>
+        </mat-list-item>
+        <mat-list-item>
+          <button type="button" mat-button (click)="this.navigateTo('/')">
+            <mat-icon>list</mat-icon>
+            Adverts
+          </button>
+        </mat-list-item>
+        <mat-list-item>
+          <button type="button" mat-button (click)="this.navigateTo('/create')">
+            <mat-icon>add_ad</mat-icon>
+            Make an advert
+          </button>
+        </mat-list-item>
+      </ng-container>
+
+      <ng-container>
+        <mat-list-item>
+          <span>Auth</span>
+        </mat-list-item>
+        <mat-list-item>
+          <button type="button" mat-button (click)="this.logout()">
+            <mat-icon>logout</mat-icon>
+            Log out
+          </button>
+        </mat-list-item>
+      </ng-container>
+      } @else {
       <!-- Auth region -->
       <ng-container>
         <mat-list-item>
@@ -23,6 +55,7 @@
           </button>
         </mat-list-item>
       </ng-container>
+      }
 
       <mat-list-item class="pt-[100%]">
         <span class="text-zinc-400">

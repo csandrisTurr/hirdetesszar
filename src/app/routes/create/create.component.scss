@@ -1,0 +1,12 @@
+#fileupload {
+  display: none;
+}
+
+label[for="fileupload"] {
+  background-color: var(--mat-sys-surface-variant);
+  border-radius: var(--mat-sys-corner-extra-small);
+  padding: 32px 16px;
+  border: 4px dashed var(--mat-sys-outline);
+  cursor: pointer;
+  margin-bottom: 16px;
+}
