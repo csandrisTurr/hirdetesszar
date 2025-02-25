@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../../auth.service';
 import { DelayService } from '../../delay.service';
 import { ApiService } from '../../api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +23,7 @@ import { ApiService } from '../../api.service';
 })
 export class LoginComponent {
 
-  constructor(private readonly authService: AuthService, private readonly delayService: DelayService, private readonly apiService: ApiService) {}
+  constructor(private readonly authService: AuthService, private readonly delayService: DelayService, private readonly apiService: ApiService, private readonly router: Router) {}
 
   email: string = '';
   password: string = '';
@@ -35,6 +36,7 @@ export class LoginComponent {
       });
 
       this.authService.login(res.data.token);
+      this.router.navigateByUrl('/');
     }, 1000);
   }
 }

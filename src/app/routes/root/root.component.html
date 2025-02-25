@@ -1,34 +1,64 @@
-<section class="flex">
-    <mat-card class="w-[400px]" matTooltip="nagyon meno mosogep egyebkent kisfiam beleszart eddig 4x de ki let takaritva lacodik a kepen is meg ja">
+<div class="flex gap-2">
+  <mat-form-field class="example-full-width w-full">
+    <mat-label>Search</mat-label>
+    <input matInput placeholder="Type something" [(ngModel)]="search" (ngModelChange)="fos()">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Category</mat-label>
+    <mat-select [(value)]="category" (selectionChange)="fos()">
+      @for (cat of categories; track category) {
+        <mat-option [value]="cat">{{ cat }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+</div>
+<section class="flex gap-4 flex-wrap">
+  @for (item of nagyoncuccok(); track $index) {
+    <mat-card class="w-min-[400px] flex-grow" [matTooltip]="item.description">
         <mat-card-header>
             <mat-card-title class="pb-4">
-                <span class="text-2xl">elado mosogep nics fedele de jol mukdik</span>
+                <span class="text-2xl">{{ item.title }}</span>
             </mat-card-title>
             <mat-card-subtitle>
               <div class="flex gap-2">
-                <span>190 000 Ft</span>
+                <span>{{ item.price }} Ft</span>
                 <span>•</span>
-                <span>lacikagaming</span>
+                <span>{{ item.user.name }}</span>
               </div>
             </mat-card-subtitle>
         </mat-card-header>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTw7QWygEu9HEVpzQbXsfQyyk7kHGFyrxbXDGUJeHs6v3Yj2dO6tiLR-8xb-8irmTZkzcw&usqp=CAU"
+        @if (item.image) {
+        <img src="http://localhost:3000/uploads/{{ item.image }}"
           alt=""
           mat-card-image
           class="h-[200px] my-2"
           >
+
+        } @else {
+        <img src="https://thumb.ac-illust.com/b1/b170870007dfa419295d949814474ab2_t.jpeg"
+          alt=""
+          mat-card-image
+          class="h-[200px] my-2"
+          >
+
+        }
         <mat-card-content class="!flex flex-col">
             <div class="flex">
             </div>
         </mat-card-content>
         <mat-card-footer>
           <div class="flex justify-between px-4 text-gray-400">
-            <span>ingatlan</span>
-            <span>2024 02 12</span>
+            <span>{{ item.category }}</span>
+            <span>{{ item.date }}</span>
           </div>
         </mat-card-footer>
         <mat-card-actions>
-            <button mat-flat-button class="w-full">Megvesz</button>
+          @if (item.user.id == userId) {
+            <button mat-flat-button class="w-full" (click)="del(item.id)">Delete</button>
+          } @else {
+            <button mat-flat-button class="w-full">Purchase</button>
+          }
         </mat-card-actions>
     </mat-card>
+  }
 </section>

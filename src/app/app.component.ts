@@ -60,6 +60,7 @@ export class AppComponent {
   logout() {
     this.delayService.do(() => {
       this.authService.logout();
+      this.navigateTo('login');
     }, 1000);
   }
 }

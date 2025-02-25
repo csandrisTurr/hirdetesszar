@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ɵgetUnknownElementStrictMode } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -6,6 +6,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { ApiService } from '../../api.service';
+import { categories } from '../../categories';
+import { Router } from '@angular/router';
+import { DelayService } from '../../delay.service';
 
 @Component({
   selector: 'app-create',
@@ -23,6 +27,14 @@ import { MatSelectModule } from '@angular/material/select';
 })
 export class CreateComponent {
   files: FileList | null = null;
+
+  title: string = ""
+  description: string = ""
+  price: string = ""
+  categories = categories
+  category: string = categories[0]
+
+  constructor(private readonly apiService: ApiService, private readonly router: Router, private readonly delayService: DelayService) {}
 
   changeHandler(ev: any) {
     console.log("help")
@@ -73,5 +85,26 @@ export class CreateComponent {
     ev.preventDefault();
   }
 
-  click() {}
+  async click() {
+    this.delayService.do(async () => {
+      let filename: string | undefined;
+      const cat = this.category;
+
+      if (this.files != null && this.files?.length > 0)
+        filename = (await this.apiService.uploadFile(this.files![0])).data.file.filename;
+
+      const ass = await this.apiService.get<{ id: string }>('users/profile', {});
+
+      this.apiService.post('adv', {
+        userId: ass.data.id,
+        category: cat,
+        price: parseInt(this.price),
+        description: this.description,
+        title: this.title,
+        image: filename,
+      });
+
+      this.router.navigateByUrl('/');
+    }, 1000);
+  }
 }

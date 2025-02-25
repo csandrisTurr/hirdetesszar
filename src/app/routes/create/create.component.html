@@ -9,20 +9,22 @@
             <div class="flex flex-col">
                 <mat-form-field>
                     <mat-label>Title</mat-label>
-                    <input matInput>
+                    <input matInput [(ngModel)]="title">
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Description</mat-label>
-                    <input matInput>
+                    <input matInput [(ngModel)]="description">
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Price</mat-label>
-                    <input matInput type="number">
+                    <input matInput type="number" [(ngModel)]="price">
                 </mat-form-field>
                 <mat-form-field>
                   <mat-label>Category</mat-label>
-                  <mat-select>
-                      <mat-option [value]="">a</mat-option>
+                  <mat-select [(value)]="category">
+                    @for (cat of categories; track category) {
+                      <mat-option [value]="cat">{{ cat }}</mat-option>
+                    }
                   </mat-select>
                 </mat-form-field>
                 <label for="fileupload"
